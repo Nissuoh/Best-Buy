@@ -1,15 +1,9 @@
 import products
 import store
 
-product_list = [
-    products.Product("MacBook Air M2", price=1450, quantity=100),
-    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-    products.Product("Google Pixel 7", price=500, quantity=250),
-]
-best_buy = store.Store(product_list)
-
 
 def display_menu():
+    """Prints the store menu options."""
     print("\nStore Menu")
     print("----------")
     print("1. List all products in store")
@@ -19,6 +13,7 @@ def display_menu():
 
 
 def process_order(store_obj):
+    """Handles the user interaction for creating a shopping list and ordering."""
     available_products = store_obj.get_all_products()
     if not available_products:
         print("Store is currently empty.")
@@ -48,7 +43,7 @@ def process_order(store_obj):
 
             product = available_products[prod_idx]
             shopping_list.append((product, qty))
-            print("Added to cart.")
+            print(f"Added {qty}x {product.name} to cart.")
 
         except ValueError:
             print("Invalid input. Please enter numbers or 'done'.")
@@ -56,12 +51,13 @@ def process_order(store_obj):
     if shopping_list:
         try:
             total_price = store_obj.order(shopping_list)
-            print(f"**********\nOrder done! Total price: {total_price:,.2f}\n**********")
-        except Exception as e:
+            print(f"\n**********\nOrder done! Total price: {total_price:,.2f}\n**********")
+        except ValueError as e:
             print(f"Order failed: {e}")
 
 
 def start(store_obj):
+    """Main loop for the store interface."""
     while True:
         display_menu()
         choice = input("Choose a number: ")
@@ -81,5 +77,16 @@ def start(store_obj):
             print("Invalid choice, please try again.")
 
 
-if __name__ == "__main__":
+def main():
+    """Initializes data and starts the application."""
+    product_list = [
+        products.Product("MacBook Air M2", price=1450, quantity=100),
+        products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+        products.Product("Google Pixel 7", price=500, quantity=250),
+    ]
+    best_buy = store.Store(product_list)
     start(best_buy)
+
+
+if __name__ == "__main__":
+    main()
